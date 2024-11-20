@@ -410,7 +410,7 @@ Unidecode @ file:///tmp/build/80754af9/unidecode_1614712377438/work
 unstructured==0.15.1
 unstructured-client==0.25.4
 unstructured-inference==0.7.36
-urllib3==2.2.2
+urllib3==1.26.20
 w3lib @ file:///Users/ktietz/demo/mc3/conda-bld/w3lib_1629359764703/work
 watchdog @ file:///Users/cbousseau/work/recipes/ci_py311/watchdog_1677963700938/work
 wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work

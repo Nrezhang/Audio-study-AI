@@ -162,3 +162,4 @@ cython_debug/
 #.idea/
 pyvenv.cfg
 /bin
+.DS_Store
