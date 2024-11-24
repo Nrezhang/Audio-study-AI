@@ -1,22 +1,26 @@
-
+import re 
 from transformers import AutoModel
+
 
 # Initialize the model
 model = AutoModel.from_pretrained("jinaai/jina-embeddings-v3", trust_remote_code=True)
 
-texts = [
-    "Follow the white rabbit.",  # English
-    "Sigue al conejo blanco.",  # Spanish
-    "Suis le lapin blanc.",  # French
-    "跟着白兔走。",  # Chinese
-    "اتبع الأرنب الأبيض.",  # Arabic
-    "Folge dem weißen Kaninchen.",  # German
-]
+def chunk_text(text, chunk_size=300):
+    """Split text into smaller chunks of a specified size."""
+    words = text.split()
+    for i in range(0, len(words), chunk_size):
+        yield " ".join(words[i:i + chunk_size])
 
-# When calling the `encode` function, you can choose a `task` based on the use case:
-# 'retrieval.query', 'retrieval.passage', 'separation', 'classification', 'text-matching'
-# Alternatively, you can choose not to pass a `task`, and no specific LoRA adapter will be used.
-embeddings = model.encode(texts, task="text-matching")
+def clean_text(text):
+    text = text.strip()
+    text = re.sub(r'\n+', '\n', text) # remove unnecessary newlines
+    text = re.sub(r'(?<!\n)\n(?!\n)', ' ', text) # ensures proper paragraph splitting
+    text = re.sub(r'\s+', ' ', text) # removes unnecessary spaces
+    text = re.sub(r'[^\x20-\x7E]+', '', text) # removes non-ASCII characters
+    return text
 
-# Compute similarities
-print(embeddings[0] @ embeddings[1].T)
+def generate_embeddings(text):
+    text = clean_text(text)
+    chunks = list(chunk_text(text))
+    embeddings = [model.encode(chunk, task="text-matching") for chunk in chunks]
+    return embeddings, chunks
