@@ -5,6 +5,11 @@ import streamlit as st
 from PyPDF2 import PdfReader
 from utilities.embeddings import generate_embeddings, test
 import json
+import chromadb
+
+chroma_client = chromadb.PersistentClientClient(path="./data/chroma")
+collection = chroma_client.get_or_create_collection(name="pdf_embeddings")
+
 
 st.title('AI-Study')
 
