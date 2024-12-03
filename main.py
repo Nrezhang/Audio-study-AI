@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 import streamlit as st
 from PyPDF2 import PdfReader
-from utilities.embeddings import generate_embeddings
+from utilities.embeddings import generate_embeddings, test
 import json
 
 st.title('AI-Study')
@@ -74,7 +74,8 @@ else:
             embeddings_json = json.dumps([emb.tolist() for emb in embeddings])
             store_txt(embeddings_json, f"embeddings_{file.name}.json")            
 
-
+# test_embedding = test()
+# print(test_embedding)
 
 prompt = st.chat_input("Input some text here")
 if prompt:
